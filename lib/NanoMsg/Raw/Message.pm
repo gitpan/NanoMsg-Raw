@@ -6,7 +6,7 @@ BEGIN {
   $NanoMsg::Raw::Message::AUTHORITY = 'cpan:FLORA';
 }
 {
-  $NanoMsg::Raw::Message::VERSION = '0.01';
+  $NanoMsg::Raw::Message::VERSION = '0.02';
 }
 # ABSTRACT: Message buffer for NanoMsg::Raw
 

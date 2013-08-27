@@ -3,7 +3,7 @@ BEGIN {
   $NanoMsg::Raw::AUTHORITY = 'cpan:FLORA';
 }
 {
-  $NanoMsg::Raw::VERSION = '0.01';
+  $NanoMsg::Raw::VERSION = '0.02';
 }
 # ABSTRACT: Low-level interface to the nanomsg scalability protocols library
 
@@ -103,15 +103,10 @@ distributes messages to large sets of interested subscribers
 
 =item *
 
-C<FANIN>
+C<PIPELINE>
 
-aggregates messages from multiple sources
-
-=item *
-
-C<FANOUT>
-
-load balances messages among many destinations
+aggregates messages from multiple sources and load balances them among many
+destinations
 
 =item *
 
@@ -634,9 +629,11 @@ The library is terminating.
 
 Removes an endpoint from socket C<$s>. The C<eid> parameter specifies the ID of
 the endpoint to remove as returned by prior call to C<nn_bind> or
-C<nn_connect>. The library will try to deliver any outstanding outbound messages
-to this endpoint for the time specified by the C<NN_LINGER> socket option. The
-call will block in the meantime.
+C<nn_connect>.
+
+The C<nn_shutdown> call will return immediately. However, the library will try
+to deliver any outstanding outbound messages to the endpoint for the time
+specified by the C<NN_LINGER> socket option.
 
 If the function succeeds, a true value is returned. Otherwise, C<undef> is
 returned and C<nn_errno> is set to to one of the values defined below.
@@ -1078,6 +1075,8 @@ C<nn_term> was called will result in an C<ETERM> error.
 If waiting for C<NN_SNDFD> or C<NN_RCVFD> using a polling function, such as
 C<poll> or C<select>, the call will unblock with both C<NN_SNDFD> and
 C<NN_RCVFD> signaled.
+
+The C<nn_term> function itself is non-blocking.
 
 =head1 WARNING
 
